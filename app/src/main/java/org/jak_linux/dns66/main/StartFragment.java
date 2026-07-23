@@ -174,12 +174,23 @@ public class StartFragment extends Fragment {
         TextView statsText = (TextView) statsRootView.findViewById(R.id.stats_textview);
         if (statsText == null)
             return;
+        org.jak_linux.dns66.vpn.Stats.save(getContext());
         long queries = org.jak_linux.dns66.vpn.DnsPacketProxy.queryCount.get();
         long blocked = org.jak_linux.dns66.vpn.DnsPacketProxy.blockedCount.get();
         if (AdVpnService.vpnStatus == AdVpnService.VPN_STATUS_RUNNING) {
             statsText.setText(getString(R.string.live_stats_status, queries, blocked));
         } else {
             statsText.setText("");
+        }
+
+        SimpleBarChartView chart = (SimpleBarChartView) statsRootView.findViewById(R.id.stats_chart);
+        if (chart != null) {
+            java.util.List<Long> history = new java.util.ArrayList<>(
+                    org.jak_linux.dns66.vpn.Stats.getHistory(getContext()));
+            history.add(blocked); // today, still live
+            int barColor = androidx.core.content.ContextCompat.getColor(getContext(), R.color.colorAccent);
+            int textColor = androidx.core.content.ContextCompat.getColor(getContext(), android.R.color.darker_gray);
+            chart.setValues(history, barColor, textColor);
         }
     }
 
