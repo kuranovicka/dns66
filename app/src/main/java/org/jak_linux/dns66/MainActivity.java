@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         // user manually flipped the switch, so a config default of "on" had
         // no real effect until the user visited the Hosts tab and toggled it.
         RuleDatabaseUpdateJobService.scheduleOrCancel(this, config);
+        org.jak_linux.dns66.vpn.Stats.restore(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
