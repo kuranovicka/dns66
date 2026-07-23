@@ -54,6 +54,20 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/stats_history_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/stats_history_label"/>
+
+        <org.jak_linux.dns66.main.SimpleBarChartView
+            android:id="@+id/stats_chart"
+            android:layout_width="220dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="4dp"/>
+
     </LinearLayout>
 
 </LinearLayout>
