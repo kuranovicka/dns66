@@ -102,6 +102,7 @@ public class HostsFragment extends Fragment implements FloatingActionButtonFragm
     }
 
     public void setupFloatingActionButton(FloatingActionButton fab) {
+        fab.setContentDescription(getString(R.string.action_add_exception));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
