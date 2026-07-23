@@ -228,11 +228,10 @@ public class MainActivity extends AppCompatActivity {
 
             Intent eMailIntent = new Intent(Intent.ACTION_SEND);
             eMailIntent.setType("text/plain");
-            eMailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"jak@jak-linux.org"});
-            eMailIntent.putExtra(Intent.EXTRA_SUBJECT, "DNS66 Logcat");
+            eMailIntent.putExtra(Intent.EXTRA_SUBJECT, "ZbogomReklame Logcat");
             eMailIntent.putExtra(Intent.EXTRA_TEXT, logcat.toString());
             eMailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(eMailIntent);
+            startActivity(Intent.createChooser(eMailIntent, "Podeli dnevnik grešaka"));
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Not supported: " + e, Toast.LENGTH_LONG).show();
