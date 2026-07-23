@@ -148,45 +148,39 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                refresh();
-                break;
-            case R.id.action_load_defaults:
-                config = FileHelper.loadDefaultSettings(this);
-                FileHelper.writeSettings(this, MainActivity.config);
-                recreate();
-                break;
-            case R.id.action_import:
-                Intent intent = new Intent()
-                        .setType("*/*")
-                        .setAction(Intent.ACTION_OPEN_DOCUMENT)
-                        .addCategory(Intent.CATEGORY_OPENABLE);
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            refresh();
+        } else if (id == R.id.action_load_defaults) {
+            config = FileHelper.loadDefaultSettings(this);
+            FileHelper.writeSettings(this, MainActivity.config);
+            recreate();
+        } else if (id == R.id.action_import) {
+            Intent intent = new Intent()
+                    .setType("*/*")
+                    .setAction(Intent.ACTION_OPEN_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE);
 
-                startActivityForResult(intent, REQUEST_FILE_OPEN);
-                break;
-            case R.id.action_export:
-                Intent exportIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
-                        .addCategory(Intent.CATEGORY_OPENABLE)
-                        .setType("*/*")
-                        .putExtra(Intent.EXTRA_TITLE, "dns66.json");
+            startActivityForResult(intent, REQUEST_FILE_OPEN);
+        } else if (id == R.id.action_export) {
+            Intent exportIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType("*/*")
+                    .putExtra(Intent.EXTRA_TITLE, "dns66.json");
 
-                startActivityForResult(exportIntent, REQUEST_FILE_STORE);
-                break;
-            case R.id.setting_night_mode:
+            startActivityForResult(exportIntent, REQUEST_FILE_STORE);
+        } else if (id == R.id.setting_night_mode) {
+            item.setChecked(!item.isChecked());
+            MainActivity.config.nightMode = item.isChecked();
+            FileHelper.writeSettings(MainActivity.this, MainActivity.config);
+            recreate();
+        } else if (id == R.id.setting_show_notification) {
+            // If we are enabling notifications, we do not need to show a dialog.
+            if (!item.isChecked()) {
                 item.setChecked(!item.isChecked());
-                MainActivity.config.nightMode = item.isChecked();
+                MainActivity.config.showNotification = item.isChecked();
                 FileHelper.writeSettings(MainActivity.this, MainActivity.config);
-                recreate();
-                break;
-            case R.id.setting_show_notification:
-                // If we are enabling notifications, we do not need to show a dialog.
-                if (!item.isChecked()) {
-                    item.setChecked(!item.isChecked());
-                    MainActivity.config.showNotification = item.isChecked();
-                    FileHelper.writeSettings(MainActivity.this, MainActivity.config);
-                    break;
-                }
+            } else {
                 new AlertDialog.Builder(this)
                         .setIcon(R.drawable.ic_warning)
                         .setTitle(R.string.disable_notification_title)
@@ -205,14 +199,12 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         }).show();
-                break;
-            case R.id.action_about:
-                Intent infoIntent = new Intent(this, InfoActivity.class);
-                startActivity(infoIntent);
-                break;
-            case R.id.action_logcat:
-                sendLogcat();
-                break;
+            }
+        } else if (id == R.id.action_about) {
+            Intent infoIntent = new Intent(this, InfoActivity.class);
+            startActivity(infoIntent);
+        } else if (id == R.id.action_logcat) {
+            sendLogcat();
         }
 
         return super.onOptionsItemSelected(item);
