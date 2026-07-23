@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: "com.hiya.jacoco-android"
 
 android {
-    compileSdkVersion 29
+    namespace 'org.jak_linux.dns66'
+    compileSdkVersion 34
     defaultConfig {
         applicationId "org.jak_linux.dns66"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 29
         versionName "0.6.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -24,7 +24,6 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-    buildToolsVersion = '29.0.3'
 }
 
 dependencies {
