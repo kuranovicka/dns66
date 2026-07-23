@@ -53,7 +53,7 @@
   },
   "hosts": {
     "enabled": true,
-    "automaticRefresh": false,
+    "automaticRefresh": true,
     "items": [
       {
         "title": "Glavna lista (reklame, malver, prevare, kripto-majning)",
