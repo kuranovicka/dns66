@@ -85,11 +85,35 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
                         item.state = (item.state == Configuration.Item.STATE_ALLOW)
                                 ? Configuration.Item.STATE_ALLOW
                                 : Configuration.Item.STATE_DENY;
+                        updateState();
+                        FileHelper.writeSettings(itemView.getContext(), MainActivity.config);
+                        // Download this list right away - otherwise the switch looks "on"
+                        // but nothing is actually blocked until the next manual refresh.
+                        new org.jak_linux.dns66.db.RuleDatabaseUpdateTask(
+                                itemView.getContext().getApplicationContext(), MainActivity.config, true,
+                                java.util.Collections.singletonList(item))
+                                .execute();
+                        return;
                     } else {
                         item.state = Configuration.Item.STATE_IGNORE;
+                        updateState();
+                        FileHelper.writeSettings(itemView.getContext(), MainActivity.config);
+                        // Reload from already-downloaded local files (no network needed)
+                        // so this list actually stops blocking right away, instead of
+                        // staying active in memory until the next refresh or restart.
+                        final Context appContext = itemView.getContext().getApplicationContext();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    org.jak_linux.dns66.db.RuleDatabase.getInstance().initialize(appContext);
+                                } catch (InterruptedException e) {
+                                    Thread.currentThread().interrupt();
+                                }
+                            }
+                        }).start();
+                        return;
                     }
-                    updateState();
-                    FileHelper.writeSettings(itemView.getContext(), MainActivity.config);
                 }
             });
         }
