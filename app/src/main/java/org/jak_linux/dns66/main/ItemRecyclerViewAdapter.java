@@ -101,7 +101,8 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
                         iconView.setImageDrawable(context.getDrawable(R.drawable.ic_state_allow));
                         break;
                 }
-                iconView.setContentDescription(context.getResources().getStringArray(R.array.item_states)[item.state]);
+                String stateDescription = context.getResources().getStringArray(R.array.item_states)[item.state];
+                iconView.setContentDescription(item.title + ": " + stateDescription);
             }
 
         }
