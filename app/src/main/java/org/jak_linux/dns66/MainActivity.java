@@ -200,6 +200,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }).show();
             }
+        } else if (id == R.id.action_help) {
+            Intent helpIntent = new Intent(this, HelpActivity.class);
+            startActivity(helpIntent);
         } else if (id == R.id.action_about) {
             Intent infoIntent = new Intent(this, InfoActivity.class);
             startActivity(infoIntent);
