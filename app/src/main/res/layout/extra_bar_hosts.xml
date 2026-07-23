@@ -30,6 +30,15 @@
             android:text="@string/enable_hosts"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/host_count_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:textStyle="bold"
+        android:text=""/>
+
     <LinearLayout
         android:id="@+id/extra_bar_extra"
         android:layout_width="match_parent"
