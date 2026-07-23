@@ -65,20 +65,21 @@ public class StartFragment extends Fragment {
         statsRootView = rootView;
         Switch switchOnBoot = (Switch) rootView.findViewById(R.id.switch_onboot);
 
-        ImageView view = (ImageView) rootView.findViewById(R.id.state_image);
-
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return startStopService();
-            }
-        });
-
         Button startButton = (Button) rootView.findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startStopService();
+            }
+        });
+
+        Button refreshButton = (Button) rootView.findViewById(R.id.refresh_button);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new org.jak_linux.dns66.db.RuleDatabaseUpdateTask(
+                        getContext().getApplicationContext(), MainActivity.config, true)
+                        .execute();
             }
         });
 
@@ -183,37 +184,26 @@ public class StartFragment extends Fragment {
     }
 
     public static void updateStatus(View rootView, int status) {
-        Context context = rootView.getContext();
         TextView stateText = (TextView) rootView.findViewById(R.id.state_textview);
-        ImageView stateImage = (ImageView) rootView.findViewById(R.id.state_image);
         Button startButton = (Button) rootView.findViewById(R.id.start_button);
 
-        if (stateImage == null || stateText == null)
+        if (stateText == null || startButton == null)
             return;
 
         stateText.setText(rootView.getContext().getString(AdVpnService.vpnStatusToTextId(status)));
-        stateImage.setContentDescription(rootView.getContext().getString(AdVpnService.vpnStatusToTextId(status)));
-        stateImage.setImageAlpha(255);
-        stateImage.setImageTintList(ContextCompat.getColorStateList(context, R.color.colorStateImage));
         switch(status) {
             case AdVpnService.VPN_STATUS_RECONNECTING:
             case AdVpnService.VPN_STATUS_STARTING:
             case AdVpnService.VPN_STATUS_STOPPING:
-                stateImage.setImageDrawable(context.getDrawable(R.drawable.ic_settings_black_24dp));
                 startButton.setText(R.string.action_stop);
                 break;
             case AdVpnService.VPN_STATUS_STOPPED:
-                stateImage.setImageAlpha(32);
-                stateImage.setImageTintList(null);
-                stateImage.setImageDrawable(context.getDrawable(R.mipmap.app_icon_large));
                 startButton.setText(R.string.action_start);
                 break;
             case AdVpnService.VPN_STATUS_RUNNING:
-                stateImage.setImageDrawable(context.getDrawable(R.drawable.ic_verified_user_black_24dp));
                 startButton.setText(R.string.action_stop);
                 break;
             case AdVpnService.VPN_STATUS_RECONNECTING_NETWORK_ERROR:
-                stateImage.setImageDrawable(context.getDrawable(R.drawable.ic_error_black_24dp));
                 startButton.setText(R.string.action_stop);
                 break;
         }
