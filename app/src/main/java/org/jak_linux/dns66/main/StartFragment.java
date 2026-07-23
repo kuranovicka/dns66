@@ -45,6 +45,16 @@ public class StartFragment extends Fragment {
     public static final int REQUEST_START_VPN = 1;
     private static final String TAG = "StartFragment";
 
+    private View statsRootView;
+    private final android.os.Handler statsHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private final Runnable statsUpdater = new Runnable() {
+        @Override
+        public void run() {
+            updateStats();
+            statsHandler.postDelayed(this, 3000);
+        }
+    };
+
     public StartFragment() {
     }
 
@@ -52,6 +62,7 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_start, container, false);
+        statsRootView = rootView;
         Switch switchOnBoot = (Switch) rootView.findViewById(R.id.switch_onboot);
 
         ImageView view = (ImageView) rootView.findViewById(R.id.state_image);
@@ -142,6 +153,33 @@ public class StartFragment extends Fragment {
             checkHostsFilesAndStartService();
         }
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        statsHandler.post(statsUpdater);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        statsHandler.removeCallbacks(statsUpdater);
+    }
+
+    private void updateStats() {
+        if (statsRootView == null || getContext() == null)
+            return;
+        TextView statsText = (TextView) statsRootView.findViewById(R.id.stats_textview);
+        if (statsText == null)
+            return;
+        long queries = org.jak_linux.dns66.vpn.DnsPacketProxy.queryCount.get();
+        long blocked = org.jak_linux.dns66.vpn.DnsPacketProxy.blockedCount.get();
+        if (AdVpnService.vpnStatus == AdVpnService.VPN_STATUS_RUNNING) {
+            statsText.setText(getString(R.string.live_stats_status, queries, blocked));
+        } else {
+            statsText.setText("");
+        }
     }
 
     public static void updateStatus(View rootView, int status) {
