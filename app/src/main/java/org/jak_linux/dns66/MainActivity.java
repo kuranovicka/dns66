@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
     private void sendLogcat() {
         Process proc = null;
         try {
-            proc = Runtime.getRuntime().exec("logcat -d");
+            proc = Runtime.getRuntime().exec("logcat -b crash -d");
             InputStream is = proc.getInputStream();
             BufferedReader bis = new BufferedReader(new InputStreamReader(is));
             StringBuilder logcat = new StringBuilder();
