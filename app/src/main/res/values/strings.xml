@@ -78,6 +78,7 @@
     <string name="host_count_status">Trenutno blokirano: %1$d domena.</string>
     <string name="host_count_status_empty">Lista još nije preuzeta. Koristite „Osveži liste domena” u meniju.</string>
     <string name="live_stats_status">Upita: %1$d. Blokirano: %2$d.</string>
+    <string name="stats_history_label">Poslednjih 7 dana</string>
     <string name="permission_denied">Dozvola odbijena</string>
     <string name="invalid_url_s">Neispravan URL: %1$s</string>
     <string name="file_not_found">Fajl nije pronađen</string>
