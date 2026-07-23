@@ -177,24 +177,22 @@ public class ItemActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.action_delete:
-                Intent deleteIntent = new Intent();
-                deleteIntent.putExtra("DELETE", true);
-                setResult(RESULT_OK, deleteIntent);
-                finish();
-                break;
-            case R.id.action_save:
-                Intent intent = new Intent();
-                intent.putExtra("ITEM_TITLE", titleText.getText().toString());
-                intent.putExtra("ITEM_LOCATION", locationText.getText().toString());
-                if (stateSpinner != null)
-                    intent.putExtra("ITEM_STATE", stateSpinner.getSelectedItemPosition());
-                if (stateSwitch != null)
-                    intent.putExtra("ITEM_STATE", stateSwitch.isChecked() ? 1 : 0);
-                setResult(RESULT_OK, intent);
-                finish();
-                break;
+        int id = item.getItemId();
+        if (id == R.id.action_delete) {
+            Intent deleteIntent = new Intent();
+            deleteIntent.putExtra("DELETE", true);
+            setResult(RESULT_OK, deleteIntent);
+            finish();
+        } else if (id == R.id.action_save) {
+            Intent intent = new Intent();
+            intent.putExtra("ITEM_TITLE", titleText.getText().toString());
+            intent.putExtra("ITEM_LOCATION", locationText.getText().toString());
+            if (stateSpinner != null)
+                intent.putExtra("ITEM_STATE", stateSpinner.getSelectedItemPosition());
+            if (stateSwitch != null)
+                intent.putExtra("ITEM_STATE", stateSwitch.isChecked() ? 1 : 0);
+            setResult(RESULT_OK, intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
