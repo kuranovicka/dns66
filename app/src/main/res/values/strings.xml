@@ -67,6 +67,9 @@
     <string name="persistable_uri_permission_failed">Nije moguće koristiti traženi fajl: nema dozvole za trajno korišćenje tog fajla</string>
     <string name="updating_n_host_files">Ažuriranje %1$d lista domena</string>
     <string name="could_not_update_all_hosts">Nije moguće ažurirati sve liste domena</string>
+    <string name="update_success_count">Uspešno ažurirano. Trenutno blokirano: %1$d domena.</string>
+    <string name="host_count_status">Trenutno blokirano: %1$d domena.</string>
+    <string name="host_count_status_empty">Lista još nije preuzeta. Koristite „Osveži liste domena” u meniju.</string>
     <string name="permission_denied">Dozvola odbijena</string>
     <string name="invalid_url_s">Neispravan URL: %1$s</string>
     <string name="file_not_found">Fajl nije pronađen</string>
