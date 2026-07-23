@@ -107,19 +107,16 @@ public class AllowlistFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         Log.d(TAG, "onMenuItemClick: Setting" + item);
-                        switch (item.getItemId()) {
-                            case R.id.allowlist_default_on_vpn:
-                                Log.d(TAG, "onMenuItemClick: OnVpn");
-                                MainActivity.config.allowlist.defaultMode = Configuration.Allowlist.DEFAULT_MODE_ON_VPN;
-                                break;
-                            case R.id.allowlist_default_not_on_vpn:
-                                Log.d(TAG, "onMenuItemClick: NotOnVpn");
-                                MainActivity.config.allowlist.defaultMode = Configuration.Allowlist.DEFAULT_MODE_NOT_ON_VPN;
-                                break;
-                            case R.id.allowlist_default_intelligent:
-                                Log.d(TAG, "onMenuItemClick: Intelligent");
-                                MainActivity.config.allowlist.defaultMode = Configuration.Allowlist.DEFAULT_MODE_INTELLIGENT;
-                                break;
+                        int id = item.getItemId();
+                        if (id == R.id.allowlist_default_on_vpn) {
+                            Log.d(TAG, "onMenuItemClick: OnVpn");
+                            MainActivity.config.allowlist.defaultMode = Configuration.Allowlist.DEFAULT_MODE_ON_VPN;
+                        } else if (id == R.id.allowlist_default_not_on_vpn) {
+                            Log.d(TAG, "onMenuItemClick: NotOnVpn");
+                            MainActivity.config.allowlist.defaultMode = Configuration.Allowlist.DEFAULT_MODE_NOT_ON_VPN;
+                        } else if (id == R.id.allowlist_default_intelligent) {
+                            Log.d(TAG, "onMenuItemClick: Intelligent");
+                            MainActivity.config.allowlist.defaultMode = Configuration.Allowlist.DEFAULT_MODE_INTELLIGENT;
                         }
 
                         allowlistDefaultText.setText(getResources().getStringArray(R.array.allowlist_defaults)[MainActivity.config.allowlist.defaultMode]);
