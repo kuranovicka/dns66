@@ -24,11 +24,13 @@ import org.jak_linux.dns66.FileHelper;
 import org.jak_linux.dns66.ItemChangedListener;
 import org.jak_linux.dns66.MainActivity;
 import org.jak_linux.dns66.R;
+import org.jak_linux.dns66.db.RuleDatabase;
 import org.jak_linux.dns66.db.RuleDatabaseUpdateJobService;
 
 public class HostsFragment extends Fragment implements FloatingActionButtonFragment {
 
     private ItemRecyclerViewAdapter mAdapter;
+    private android.widget.TextView countStatus;
 
     public HostsFragment() {
     }
@@ -37,6 +39,9 @@ public class HostsFragment extends Fragment implements FloatingActionButtonFragm
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_hosts, container, false);
+
+        countStatus = (android.widget.TextView) rootView.findViewById(R.id.host_count_status);
+        updateCountStatus();
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.host_entries);
 
@@ -77,6 +82,23 @@ public class HostsFragment extends Fragment implements FloatingActionButtonFragm
         ExtraBar.setup(rootView.findViewById(R.id.extra_bar), "hosts");
 
         return rootView;
+    }
+
+    private void updateCountStatus() {
+        if (countStatus == null)
+            return;
+        int count = RuleDatabase.getInstance().getSize();
+        if (count > 0) {
+            countStatus.setText(getString(R.string.host_count_status, count));
+        } else {
+            countStatus.setText(getString(R.string.host_count_status_empty));
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateCountStatus();
     }
 
     public void setupFloatingActionButton(FloatingActionButton fab) {
