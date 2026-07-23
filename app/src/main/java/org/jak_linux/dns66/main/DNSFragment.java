@@ -68,6 +68,7 @@ public class DNSFragment extends Fragment implements FloatingActionButtonFragmen
 
     @Override
     public void setupFloatingActionButton(FloatingActionButton fab) {
+        fab.setContentDescription(getString(R.string.action_add_dns_server));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
