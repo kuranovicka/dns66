@@ -35,7 +35,7 @@ import java.util.Date;
  */
 class RuleDatabaseItemUpdateRunnable implements Runnable {
     private static final int CONNECT_TIMEOUT_MILLIS = 30000;
-    private static final int READ_TIMEOUT_MILLIS = 10000;
+    private static final int READ_TIMEOUT_MILLIS = 60000;
     private static final String TAG = "RuleDbItemUpdate";
 
     RuleDatabaseUpdateTask parentTask;
