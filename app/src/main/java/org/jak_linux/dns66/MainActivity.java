@@ -157,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             refresh();
+        } else if (id == R.id.action_add_item) {
+            floatingActionButton.performClick();
         } else if (id == R.id.action_load_defaults) {
             config = FileHelper.loadDefaultSettings(this);
             FileHelper.writeSettings(this, MainActivity.config);
