@@ -9,25 +9,51 @@
 
     <include layout="@layout/extra_bar_start"/>
 
-    <org.jak_linux.dns66.SquareImageView
-        android:id="@+id/state_image"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
         android:layout_weight="1"
-        android:longClickable="true"
-        android:importantForAccessibility="no"
-        android:tint="@color/colorStateImage"
-        app:srcCompat="@drawable/ic_menu_start"/>
+        android:orientation="vertical"
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/start_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/pill"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Activate"
-        android:textColor="?android:attr/textColorPrimaryInverse"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <Button
+                android:id="@+id/start_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:minHeight="72dp"
+                android:background="@drawable/pill"
+                android:backgroundTint="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="Activate"
+                android:textColor="?android:attr/textColorPrimaryInverse"/>
+
+            <Button
+                android:id="@+id/refresh_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:minHeight="72dp"
+                android:background="@drawable/pill"
+                android:backgroundTint="@color/colorAccent"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/button_refresh"
+                android:textColor="?android:attr/textColorPrimaryInverse"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>
