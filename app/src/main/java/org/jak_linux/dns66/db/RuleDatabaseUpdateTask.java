@@ -45,6 +45,7 @@ public class RuleDatabaseUpdateTask extends AsyncTask<Void, Void, Void> {
     private static final int UPDATE_NOTIFICATION_ID = 42;
     Context context;
     Configuration configuration;
+    private final List<Configuration.Item> itemsToProcess;
     ArrayList<String> errors = new ArrayList<>();
     List<String> pending = new ArrayList<>();
     List<String> done = new ArrayList<>();
@@ -52,9 +53,19 @@ public class RuleDatabaseUpdateTask extends AsyncTask<Void, Void, Void> {
     private NotificationCompat.Builder notificationBuilder;
 
     public RuleDatabaseUpdateTask(Context context, Configuration configuration, boolean notifications) {
+        this(context, configuration, notifications, null);
+    }
+
+    /**
+     * @param onlyItems If non-null, only these items are downloaded (used when a single
+     *                  filter is toggled on, so the whole configured set - including a
+     *                  potentially large main list - is not re-downloaded every time).
+     */
+    public RuleDatabaseUpdateTask(Context context, Configuration configuration, boolean notifications, List<Configuration.Item> onlyItems) {
         Log.d(TAG, "RuleDatabaseUpdateTask: Begin");
         this.context = context;
         this.configuration = configuration;
+        this.itemsToProcess = onlyItems;
 
         if (notifications)
             setupNotificationBuilder();
@@ -69,7 +80,7 @@ public class RuleDatabaseUpdateTask extends AsyncTask<Void, Void, Void> {
                 .setContentTitle(context.getString(R.string.updating_hostfiles))
                 .setSmallIcon(R.drawable.ic_refresh)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
-                .setProgress(configuration.hosts.items.size(), 0, false);
+                .setProgress(itemsToProcess != null ? itemsToProcess.size() : configuration.hosts.items.size(), 0, false);
     }
 
     @Override
@@ -78,7 +89,8 @@ public class RuleDatabaseUpdateTask extends AsyncTask<Void, Void, Void> {
         long start = System.currentTimeMillis();
         ExecutorService executor = Executors.newCachedThreadPool();
 
-        for (Configuration.Item item : configuration.hosts.items) {
+        List<Configuration.Item> itemsForThisRun = itemsToProcess != null ? itemsToProcess : configuration.hosts.items;
+        for (Configuration.Item item : itemsForThisRun) {
             RuleDatabaseItemUpdateRunnable runnable = getCommand(item);
             if (runnable.shouldDownload())
                 executor.execute(runnable);
