@@ -56,38 +56,23 @@
     "automaticRefresh": false,
     "items": [
       {
-        "title": "StevenBlack's hosts file (includes all others)",
-        "location": "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+        "title": "Glavna lista (reklame, malver, prevare, kripto-majning)",
+        "location": "https://raw.githubusercontent.com/kuranovicka/dns66/main/zbogomreklame_hosts.txt",
         "state": 0
       },
       {
-        "title": "Adaway hosts file",
-        "location": "https://adaway.org/hosts.txt",
+        "title": "Filter kockanja",
+        "location": "https://raw.githubusercontent.com/kuranovicka/dns66/main/filter_kockanje.txt",
         "state": 2
       },
       {
-        "title": "Dan Pollock's hosts file",
-        "location": "https://someonewhocares.org/hosts/hosts",
+        "title": "Filter sadržaja za odrasle",
+        "location": "https://raw.githubusercontent.com/kuranovicka/dns66/main/filter_odraslih.txt",
         "state": 2
       },
       {
-        "title": "Long-lived malware domains",
-        "location": "https://mirror.cedia.org.ec/malwaredomains/immortal_domains.txt",
-        "state": 2
-      },
-      {
-        "title": "Malware Domain List",
-        "location": "https://www.malwaredomainlist.com/hostslist/hosts.txt",
-        "state": 2
-      },
-      {
-        "title": "Malware domains.com",
-        "location": "https://mirror.cedia.org.ec/malwaredomains/justdomains",
-        "state": 2
-      },
-      {
-        "title": "Peter Lowe’s Ad server list",
-        "location": "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext",
+        "title": "Filter lažnih vesti",
+        "location": "https://raw.githubusercontent.com/kuranovicka/dns66/main/filter_lazne_vesti.txt",
         "state": 2
       }
     ]
