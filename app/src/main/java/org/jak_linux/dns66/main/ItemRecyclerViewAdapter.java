@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,78 +61,73 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         public final View view;
         public final TextView titleView;
         public final TextView subtitleView;
-        public final ImageView iconView;
+        public final android.widget.Switch switchView;
         public Configuration.Item item;
+        private boolean updatingProgrammatically = false;
 
         public ViewHolder(View view) {
             super(view);
             this.view = view;
             titleView = (TextView) view.findViewById(R.id.item_title);
             subtitleView = (TextView) view.findViewById(R.id.item_subtitle);
-            iconView = (ImageView) view.findViewById(R.id.item_enabled);
+            switchView = (android.widget.Switch) view.findViewById(R.id.item_switch);
 
             view.setOnClickListener(this);
-            iconView.setOnClickListener(this);
+            switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (updatingProgrammatically)
+                        return;
+                    if (isChecked) {
+                        // Turning on restores an explicit "Allow" (used for individual
+                        // exceptions added via the edit screen), otherwise defaults to
+                        // "Deny" (used for the main list and the optional filters).
+                        item.state = (item.state == Configuration.Item.STATE_ALLOW)
+                                ? Configuration.Item.STATE_ALLOW
+                                : Configuration.Item.STATE_DENY;
+                    } else {
+                        item.state = Configuration.Item.STATE_IGNORE;
+                    }
+                    updateState();
+                    FileHelper.writeSettings(itemView.getContext(), MainActivity.config);
+                }
+            });
         }
 
         void updateState() {
-            iconView.setImageAlpha(255 * 87 / 100);
+            updatingProgrammatically = true;
             if (stateChoices == 2) {
-                switch (item.state) {
-                    case Configuration.Item.STATE_IGNORE:
-                    case Configuration.Item.STATE_DENY:
-                        iconView.setImageDrawable(context.getDrawable(R.drawable.ic_check_box_outline_blank_black_24dp));
-                        iconView.setContentDescription(context.getString(R.string.do_not_use_dns_server));
-                        break;
-                    case Configuration.Item.STATE_ALLOW:
-                        iconView.setImageDrawable(context.getDrawable(R.drawable.ic_check_box_black_24dp));
-                        iconView.setContentDescription(context.getString(R.string.use_dns_server));
-                        break;
-                }
+                switchView.setChecked(item.state == Configuration.Item.STATE_ALLOW);
+                switchView.setContentDescription(item.title);
             } else {
-                switch (item.state) {
-                    case Configuration.Item.STATE_IGNORE:
-                        iconView.setImageDrawable(context.getDrawable(R.drawable.ic_state_ignore));
-                        iconView.setImageAlpha(255 * 38 / 100);
-                        break;
-                    case Configuration.Item.STATE_DENY:
-                        iconView.setImageDrawable(context.getDrawable(R.drawable.ic_state_deny));
-                        break;
-                    case Configuration.Item.STATE_ALLOW:
-                        iconView.setImageDrawable(context.getDrawable(R.drawable.ic_state_allow));
-                        break;
-                }
-                String stateDescription = context.getResources().getStringArray(R.array.item_states)[item.state];
-                iconView.setContentDescription(item.title + ": " + stateDescription);
+                boolean isOn = item.state != Configuration.Item.STATE_IGNORE;
+                switchView.setChecked(isOn);
+                switchView.setContentDescription(item.title);
             }
-
+            updatingProgrammatically = false;
         }
 
         @Override
         public void onClick(View v) {
             final int position = getAdapterPosition();
-            if (v == iconView) {
-                item.state = (item.state + 1) % stateChoices;
-                updateState();
-                FileHelper.writeSettings(itemView.getContext(), MainActivity.config);
-            } else if (v == view) {
-                // Start edit activity
-                MainActivity main = (MainActivity) v.getContext();
-                main.editItem(stateChoices, item, new ItemChangedListener() {
-                            @Override
-                            public void onItemChanged(Configuration.Item changedItem) {
-                                if (changedItem == null) {
-                                    items.remove(position);
-                                    notifyItemRemoved(position);
-                                } else {
-                                    items.set(position, changedItem);
-                                    ItemRecyclerViewAdapter.this.notifyItemChanged(position);
-                                }
-                                FileHelper.writeSettings(itemView.getContext(), MainActivity.config);
+            // Tapping the row (not the switch) opens the full edit screen, where an
+            // explicit "Radnja" choice (Blokiraj / Dozvoli / Zanemari) is still
+            // available for advanced, individual exceptions.
+            MainActivity main = (MainActivity) v.getContext();
+            main.editItem(stateChoices, item, new ItemChangedListener() {
+                        @Override
+                        public void onItemChanged(Configuration.Item changedItem) {
+                            if (changedItem == null) {
+                                items.remove(position);
+                                notifyItemRemoved(position);
+                            } else {
+                                items.set(position, changedItem);
+                                ItemRecyclerViewAdapter.this.notifyItemChanged(position);
                             }
+                            FileHelper.writeSettings(itemView.getContext(), MainActivity.config);
                         }
-                );
-            }
+                    }
+            );
         }
     }
 }
