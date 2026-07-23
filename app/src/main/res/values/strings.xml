@@ -27,6 +27,7 @@
     <string name="cannot_load_default_config">Nije moguće učitati podrazumevana podešavanja: %s - Ovo ne bi trebalo da se desi</string>
     <string name="cannot_write_config">Nije moguće upisati podešavanja: %s</string>
     <string name="action_refresh">Osveži liste domena</string>
+    <string name="button_refresh">Osveži listu</string>
     <string name="notification_starting">Pokretanje</string>
     <string name="notification_running">Aktivno</string>
     <string name="notification_stopping">Zaustavljanje</string>
