@@ -171,7 +171,12 @@ public class RuleDatabaseUpdateTask extends AsyncTask<Void, Void, Void> {
         }
         if (notificationBuilder != null) {
             if (errors.isEmpty()) {
-                notificationManager.cancel(UPDATE_NOTIFICATION_ID);
+                notificationBuilder.setProgress(0, 0, false);
+                notificationBuilder.setContentText(
+                        context.getString(R.string.update_success_count, RuleDatabase.getInstance().getSize()));
+                notificationBuilder.setSmallIcon(R.drawable.ic_state_deny);
+                notificationBuilder.setAutoCancel(true);
+                notificationManager.notify(UPDATE_NOTIFICATION_ID, notificationBuilder.build());
             } else {
                 notificationBuilder.setProgress(0, 0, false);
                 notificationBuilder.setContentText(context.getString(R.string.could_not_update_all_hosts));
@@ -182,7 +187,7 @@ public class RuleDatabaseUpdateTask extends AsyncTask<Void, Void, Void> {
 
                 lastErrors.set(errors);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                        intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+                        intent, PendingIntent.FLAG_ONE_SHOT);
 
 
                 notificationBuilder.setContentIntent(pendingIntent);
