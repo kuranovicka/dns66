@@ -38,6 +38,13 @@ public class RuleDatabase {
     HashSet<String> nextBlockedHosts = null;
 
     /**
+     * Returns the number of blocked hosts currently loaded.
+     */
+    public int getSize() {
+        return blockedHosts.get().size();
+    }
+
+    /**
      * Package-private constructor for instance and unit tests.
      */
     RuleDatabase() {
