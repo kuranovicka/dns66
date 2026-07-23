@@ -82,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
             config = FileHelper.loadCurrentSettings(this);
         }
 
+        // Make sure the scheduled background refresh job actually matches the
+        // saved setting - the job was previously only (re)scheduled when the
+        // user manually flipped the switch, so a config default of "on" had
+        // no real effect until the user visited the Hosts tab and toggled it.
+        RuleDatabaseUpdateJobService.scheduleOrCancel(this, config);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         } else if (config.nightMode) {
